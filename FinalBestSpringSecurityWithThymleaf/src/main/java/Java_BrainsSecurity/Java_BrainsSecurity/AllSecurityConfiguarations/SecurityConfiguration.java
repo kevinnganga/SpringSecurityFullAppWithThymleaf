@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -40,8 +41,17 @@ public SecurityConfiguration(UserPrincipalDetailsService userPrincipleDetailsSer
     	.antMatchers("/api/public/test2").hasAnyAuthority("ACCESS_TEST2")
     	.antMatchers("/api/public/users").hasRole("ADMIN")
     	.and()
-    	.httpBasic();
-               
+    	.formLogin()
+    	//.loginProcessingUrl("/signin")
+    	//.usernameParameter("txtUsername") //SET THIS PARAMETERS IF THE FORM NAMES ARE NOT CALLED AS REQUIRED BY SPRING ..SO WE CAN CONFIGURE TO CHANGE THE DEFAULTS
+    	//.passwordParameter("txtPassword")
+    	.loginPage("/login").permitAll()  //since everybody needs to access the Login page
+    	.and()
+    	.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/index") //NB /logout is the path in the logout button
+    	.and()																								//we dont have to add the request mapping in the controller spring will handle the logout out of the box as long as the path in the logout btn is /logout
+    	.rememberMe().tokenValiditySeconds(2592000);  //nothing else needs to be done as long as the id and name in the remember me check box is "remember-me"
+    									  //30 days in seconds is 2592000
+    	//.rememberMe().tokenValiditySeconds(2592000).rememberMeParameter("anything");      
     }
     
    
