@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:insert="fragments.html :: headerfiles"></head>
 <body>
 <header th:insert="fragments.html :: nav"></header>
@@ -7,5 +7,7 @@
 <div class="container">
     <p>This is Admin\Index. Only people with role_admin can see this.</p>
 </div>
+
+<h1>Welcome : <span sec:authentication="name"></span></h1>
 </body>
 </html>
