@@ -21,11 +21,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth)throws Exception {
         auth.inMemoryAuthentication()
-        	 .withUser("admin").password(passwordEncoder().encode("admin123")).roles("ADMIN")
+        	 .withUser("admin").password(passwordEncoder().encode("admin123")).roles("ADMIN").authorities("ACCESS_TEST1","ACCESS_TEST2")
         	 .and()
         	 .withUser("dan").password(passwordEncoder().encode("dan123")).roles("USER")
              .and()
-   	         .withUser("manager").password(passwordEncoder().encode("manager123")).roles("MANAGER");
+   	         .withUser("manager").password(passwordEncoder().encode("manager123")).roles("MANAGER").authorities("ACCESS_TEST1");
     }
 
     @Override
@@ -36,7 +36,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     	.antMatchers("/profile/**").authenticated() //No html extension coz its the only file in the folder admin
     	.antMatchers("/admin/**").hasRole("ADMIN") //MEANS ANY FILE WITHIN THE admin folder
     	.antMatchers("/management/**").hasAnyRole("ADMIN","MANAGER")//MEANS ANY FILE WITHIN THE management folder
-    	.antMatchers("/api/public/**").hasRole("ADMIN") //any route with /api/public/something
+    	.antMatchers("/api/public/test1").hasAnyAuthority("ACCESS_TEST1")
+    	.antMatchers("/api/public/test2").hasAnyAuthority("ACCESS_TEST2")
     	.and()
     	.httpBasic();
                
