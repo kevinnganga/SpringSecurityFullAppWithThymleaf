@@ -2,7 +2,6 @@ package Java_BrainsSecurity.Java_BrainsSecurity;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -37,6 +36,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     	.antMatchers("/profile/**").authenticated() //No html extension coz its the only file in the folder admin
     	.antMatchers("/admin/**").hasRole("ADMIN") //MEANS ANY FILE WITHIN THE admin folder
     	.antMatchers("/management/**").hasAnyRole("ADMIN","MANAGER")//MEANS ANY FILE WITHIN THE management folder
+    	.antMatchers("/api/public/**").hasRole("ADMIN") //any route with /api/public/something
     	.and()
     	.httpBasic();
                
