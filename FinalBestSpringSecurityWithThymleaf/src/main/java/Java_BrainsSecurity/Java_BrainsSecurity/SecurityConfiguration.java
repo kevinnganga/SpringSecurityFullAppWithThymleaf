@@ -34,9 +34,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         
     	http.authorizeRequests()
     	.antMatchers("/index.html").permitAll()//START WITH THE LEAST PRIVILLEGED COZ EVERY ROLE CAN ACCESS EVERYTHING ABOVE IT eg ADMIN CAN ACCESS /profile/index and /index.html
-    	.antMatchers("/profile/index").authenticated() //No html extension coz its the only file in the folder admin
-    	.antMatchers("/admin/index").hasRole("ADMIN")
-    	.antMatchers("/management/index").hasAnyRole("ADMIN","MANAGER")
+    	.antMatchers("/profile/**").authenticated() //No html extension coz its the only file in the folder admin
+    	.antMatchers("/admin/**").hasRole("ADMIN") //MEANS ANY FILE WITHIN THE admin folder
+    	.antMatchers("/management/**").hasAnyRole("ADMIN","MANAGER")//MEANS ANY FILE WITHIN THE management folder
     	.and()
     	.httpBasic();
                
